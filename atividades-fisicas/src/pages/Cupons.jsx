@@ -1,45 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
 import AuthContext from '../context/AuthContext';
+import mockCoupons from '../mocks/mockCoupons';
 import { getActivities } from '../services/storage';
-
-const coupons = [
-  {
-    id: 'cupom-1',
-    store: 'SportWave',
-    title: '10% off em roupas esportivas',
-    code: 'SPORT10',
-    description: 'Libera ao registrar a sua primeira atividade.',
-    goalLabel: 'Meta: 1 atividade concluida',
-    isUnlocked: ({ totalActivities }) => totalActivities >= 1,
-  },
-  {
-    id: 'cupom-2',
-    store: 'NutriBox',
-    title: '15% off em snacks fitness',
-    code: 'NUTRI15',
-    description: 'Perfeito para quem manteve frequencia na semana.',
-    goalLabel: 'Meta: 3 atividades nos ultimos 7 dias',
-    isUnlocked: ({ weeklyActivities }) => weeklyActivities >= 3,
-  },
-  {
-    id: 'cupom-3',
-    store: 'MoveShoes',
-    title: '20% off em tenis de corrida',
-    code: 'RUN20',
-    description: 'Desconto especial para quem ganha ritmo nos treinos.',
-    goalLabel: 'Meta: 120 minutos acumulados',
-    isUnlocked: ({ totalDuration }) => totalDuration >= 120,
-  },
-  {
-    id: 'cupom-4',
-    store: 'GymFuel',
-    title: 'Frete gratis em suplementos',
-    code: 'FUELFREE',
-    description: 'Recompensa extra para quem bate volume de calorias.',
-    goalLabel: 'Meta: 1000 calorias acumuladas',
-    isUnlocked: ({ totalCalories }) => totalCalories >= 1000,
-  },
-];
 
 function Cupons() {
   const { user } = useContext(AuthContext);
@@ -144,15 +106,16 @@ function Cupons() {
           gap: '16px',
         }}
       >
-        {coupons.map((coupon) => {
-          const unlocked = coupon.isUnlocked(metrics);
+        {mockCoupons.map((coupon) => {
+          const unlocked = metrics.totalActivities >= coupon.goal;
+          const progress = `${Math.min(metrics.totalActivities, coupon.goal)}/${coupon.goal}`;
 
           return (
             <div
               key={coupon.id}
               className="card"
               style={{
-                opacity: unlocked ? 1 : 0.55,
+                opacity: unlocked ? 1 : 0.8,
                 borderColor: unlocked ? '#86efac' : '#e5e7eb',
                 backgroundColor: unlocked ? '#f0fdf4' : '#ffffff',
               }}
@@ -188,7 +151,7 @@ function Cupons() {
                 {coupon.description}
               </p>
               <p style={{ margin: '0 0 16px', color: '#6b7280', fontSize: '14px' }}>
-                {coupon.goalLabel}
+                Meta: {progress}
               </p>
 
               <div
@@ -197,6 +160,9 @@ function Cupons() {
                   borderRadius: '10px',
                   border: '1px dashed #9ca3af',
                   backgroundColor: unlocked ? '#ffffff' : '#f9fafb',
+                  filter: unlocked ? 'none' : 'blur(3px)',
+                  userSelect: unlocked ? 'text' : 'none',
+                  transition: 'filter 0.2s ease',
                 }}
               >
                 <p style={{ margin: '0 0 6px', color: '#6b7280', fontSize: '13px' }}>
