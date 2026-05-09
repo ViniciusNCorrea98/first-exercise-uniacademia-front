@@ -102,6 +102,22 @@ function Navbar() {
           >
             Profile
           </NavLink>
+          <NavLink
+            to="/cupons"
+            style={linkStyle}
+            onMouseEnter={(event) => {
+              if (!event.currentTarget.getAttribute('aria-current')) {
+                event.currentTarget.style.backgroundColor = '#f3f4f6';
+              }
+            }}
+            onMouseLeave={(event) => {
+              if (!event.currentTarget.getAttribute('aria-current')) {
+                event.currentTarget.style.backgroundColor = 'transparent';
+              }
+            }}
+          >
+            Cupons
+          </NavLink>
           <button
             type="button"
             className="button"

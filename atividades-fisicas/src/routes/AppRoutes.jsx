@@ -2,6 +2,7 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import PrivateRoute from '../components/PrivateRoute';
 import Activities from '../pages/Activities';
+import Cupons from '../pages/Cupons';
 import Dashboard from '../pages/Dashboard';
 import Login from '../pages/Login';
 import Profile from '../pages/Profile';
@@ -44,6 +45,14 @@ function AppRoutes() {
         element={
           <PrivatePage>
             <Profile />
+          </PrivatePage>
+        }
+      />
+      <Route
+        path="/cupons"
+        element={
+          <PrivatePage>
+            <Cupons />
           </PrivatePage>
         }
       />
